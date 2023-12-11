@@ -42,6 +42,11 @@ class ListToDo extends React.Component {
 
       let index = listToDoCopy.findIndex((item) => item.id == todo.id);
 
+      if (index < 0) {
+        toast.error("Record not found");
+        return;
+      }
+
       listToDoCopy[index].title = editTodo.title;
 
       this.setState({
@@ -79,54 +84,57 @@ class ListToDo extends React.Component {
     let { listToDos, editTodo } = this.state;
     let isEmptyObj = Object.keys(editTodo).length === 0;
     return (
-      <div className="list-todo-container">
-        <AddToDo addNewToDo={this.addNewToDo} />
-        <div className="list-todo-content">
-          {listToDos &&
-            listToDos.length > 0 &&
-            listToDos.map((item, index) => {
-              return (
-                <div className="todo-child" key={item.id}>
-                  {isEmptyObj === false && editTodo.id === item.id ? (
-                    <span>
-                      {index + 1} -{" "}
-                      <input
-                        onChange={(event) => {
-                          this.handleOnChangeEditTodo(event);
-                        }}
-                        value={editTodo.title}
-                      />
-                    </span>
-                  ) : (
-                    <span>
-                      {index + 1} - {item.title}
-                    </span>
-                  )}
-                  <button
-                    className="edit"
-                    onClick={() => {
-                      this.handleEditToDo(item);
-                    }}
-                  >
-                    {isEmptyObj === false && editTodo.id === item.id
-                      ? "Save"
-                      : "Edit"}
-                  </button>
-                  {isEmptyObj === false && editTodo.id === item.id ? (
-                    <></>
-                  ) : (
+      <>
+        <p>Simple To Do Apps Cong Anh</p>
+        <div className="list-todo-container">
+          <AddToDo addNewToDo={this.addNewToDo} />
+          <div className="list-todo-content">
+            {listToDos &&
+              listToDos.length > 0 &&
+              listToDos.map((item, index) => {
+                return (
+                  <div className="todo-child" key={item.id}>
+                    {isEmptyObj === false && editTodo.id === item.id ? (
+                      <span>
+                        {index + 1} -{" "}
+                        <input
+                          onChange={(event) => {
+                            this.handleOnChangeEditTodo(event);
+                          }}
+                          value={editTodo.title}
+                        />
+                      </span>
+                    ) : (
+                      <span>
+                        {index + 1} - {item.title}
+                      </span>
+                    )}
                     <button
-                      className="delete"
-                      onClick={() => this.handleDeleteToDo(item)}
+                      className="edit"
+                      onClick={() => {
+                        this.handleEditToDo(item);
+                      }}
                     >
-                      Delete
+                      {isEmptyObj === false && editTodo.id === item.id
+                        ? "Save"
+                        : "Edit"}
                     </button>
-                  )}
-                </div>
-              );
-            })}
+                    {isEmptyObj === false && editTodo.id === item.id ? (
+                      <></>
+                    ) : (
+                      <button
+                        className="delete"
+                        onClick={() => this.handleDeleteToDo(item)}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
